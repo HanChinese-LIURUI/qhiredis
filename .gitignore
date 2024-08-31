@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+!/hiredis-1.2.0/Debug
+!/hiredis-1.2.0/Release
