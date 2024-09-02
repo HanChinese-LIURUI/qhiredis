@@ -110,6 +110,27 @@ bool QHiRedis::exists(const QVariant& key) const {
 	return state;
 }
 
+bool QHiRedis::expire(const QVariant& key, const int& sec) {
+	bool state = true;
+	QString command = "EXPIRE " + key.toString() + " " + QString::number(sec);
+
+	redisReply* reply = (redisReply*)redisCommand(redis, command.toStdString().c_str());
+
+	if (reply) {
+		if (reply->type != REDIS_REPLY_INTEGER) {
+			state = false;
+		}
+		else {
+			reply->integer != 1 ? state = false : state = true;
+		}
+	}
+	else {
+		state = false;
+	}
+	freeReplyObject(reply);
+	return state;
+}
+
 bool QHiRedis::setString(const QVariant& key, const QVariant& value) const {
 	bool state = true;
 	QString command = "SET " + key.toString() + " " + value.toString();
@@ -198,6 +219,27 @@ bool QHiRedis::mSetnxString(const QVariantMap& map) const {
 	else {
 		state = false;
 	}
+	freeReplyObject(reply);
+	return state;
+}
+
+bool QHiRedis::setexString(const QVariant& key, const int& sec, const QVariant& value) const {
+	bool state = true;
+	QString command = "SETEX " + key.toString() + " " + QString::number(sec) + " " + value.toString();
+	redisReply* reply = (redisReply*)redisCommand(redis, command.toStdString().c_str());
+
+	if (reply) {
+		if (reply->type != REDIS_REPLY_STATUS) {
+			state = false;
+		}
+		else {
+			QString(reply->str) != "OK" ? state = false : state = true;
+		}
+	}
+	else {
+		state = false;
+	}
+
 	freeReplyObject(reply);
 	return state;
 }
@@ -292,9 +334,9 @@ QVariantHash QHiRedis::getHash(const QVariant& key) const {
 	if (reply) {
 		if (reply->type == REDIS_REPLY_ARRAY) {
 			size_t size = reply->elements;
-			QString key, value;
+			
 			for (size_t i = 0; i < size; i++) {
-
+				QString key, value;
 				redisReply* tReply = reply->element[i];
 
 				if (tReply) {
@@ -306,8 +348,6 @@ QVariantHash QHiRedis::getHash(const QVariant& key) const {
 						else {
 							value = tString;
 							valueHash.insert(key, value);
-							key.clear();
-							value.clear();
 						}
 					}
 				}

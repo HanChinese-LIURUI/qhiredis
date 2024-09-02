@@ -20,10 +20,14 @@ struct timeval {
 #include <QVariant>
 #include <QHash>
 
-class QHiRedis : public QObject {
+class QHIREDIS_EXPORT QHiRedis : public QObject {
 	Q_OBJECT
 
 public:
+	//! @brief 
+	//! @param ip 
+	//! @param port 
+	//! @param parent 
 	explicit QHiRedis(const QString& ip = "127.0.0.1", const qint64& port = 6379, QObject* parent = nullptr);
 	~QHiRedis();
 
@@ -51,6 +55,12 @@ public:
 	//! @return 存在:true
 	bool exists(const QVariant& key) const;
 
+	//! @brief 为给定 key 设置过期时间，以秒计
+	//! @param key 
+	//! @param sec 
+	//! @return 存在:true
+	bool expire(const QVariant& key, const int& sec);
+
 	//! @brief 设置一个key-value对，key如果存在，则更新value。
 	//! @param key 
 	//! @param value 
@@ -73,6 +83,16 @@ public:
 	//! @param value 
 	//! @return 成功:true(代表所有的数据都不存在且插入成功) false:(数据插入失败，但不代表一定是数据存在返回的失败)
 	bool mSetnxString(const QVariantMap& map) const;
+
+	//! @brief 将值value关联到key，并将key的过期时间设为 seconds (以秒为单位)
+	//! @param key 
+	//! @param sec 
+	//! @param value 
+	//! @return 成功:true
+	bool setexString(
+		const QVariant& key,
+		const int& sec,
+		const QVariant& value) const;
 
 	//! @brief 获取一个key字符串值
 	//! @param key 
