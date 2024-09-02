@@ -1,4 +1,5 @@
 ﻿#include "qhiredis.h"
+#include <QDebug>
 
 QHiRedis::QHiRedis(const QString& ip, const qint64& port, QObject* parent)
 	:QObject(parent),
@@ -316,6 +317,7 @@ bool QHiRedis::setHash(const QVariant& key, const QVariantHash& value) const {
 	if (reply) {
 		if (reply->type == REDIS_REPLY_ERROR) {
 			state = false;
+			qWarning() << QString(reply->str);
 		}
 	}
 	else {
@@ -325,7 +327,29 @@ bool QHiRedis::setHash(const QVariant& key, const QVariantHash& value) const {
 	return state;
 }
 
-QVariantHash QHiRedis::getHash(const QVariant& key) const {
+QVariant QHiRedis::getHashField(const QVariant& key, const QVariant& field) const {
+	bool state = true;
+	QVariant value;
+
+	QString command = "HGET " + key.toString() + " " + field.toString();
+	redisReply* reply = (redisReply*)redisCommand(redis, command.toStdString().c_str());
+
+	if (reply) {
+		if (reply->type != REDIS_REPLY_STRING) {
+			state = false;
+		}
+		else {
+			value = reply->str;
+		}
+	}
+	else {
+		state = false;
+	}
+	freeReplyObject(reply);
+	return value;
+}
+
+QVariantHash QHiRedis::getHashAll(const QVariant& key) const {
 	QVariantHash valueHash;
 
 	QString command = "HGETALL " + key.toString();
@@ -334,9 +358,9 @@ QVariantHash QHiRedis::getHash(const QVariant& key) const {
 	if (reply) {
 		if (reply->type == REDIS_REPLY_ARRAY) {
 			size_t size = reply->elements;
-			
+			QString key, value;
 			for (size_t i = 0; i < size; i++) {
-				QString key, value;
+				
 				redisReply* tReply = reply->element[i];
 
 				if (tReply) {

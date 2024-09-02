@@ -17,6 +17,9 @@ public:
 	~TestW();
 
 private:
+	void hashInsert();
+	void getHashfield();
+private:
 	Ui::TestWClass* ui;
 };
 

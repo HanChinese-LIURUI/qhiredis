@@ -117,10 +117,12 @@ public:
 	//! @return 成功:true 
 	bool setHash(const QVariant& key, const QVariantHash& value) const;
 
-	//! @brief 获取一个keyHash值
+	QVariant getHashField(const QVariant& key, const QVariant& field) const;
+
+	//! @brief 获取在哈希表中指定 key 的所有字段和值
 	//! @param key 
 	//! @return 
-	QVariantHash getHash(const QVariant& key) const;
+	QVariantHash getHashAll(const QVariant& key) const;
 protected:
 
 private:
