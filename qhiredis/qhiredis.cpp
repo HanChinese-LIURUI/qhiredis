@@ -9,6 +9,7 @@ QHiRedis::QHiRedis(const QString& ip, const qint64& port, QObject* parent)
 }
 
 QHiRedis::~QHiRedis() {
+	redisFree(redis);
 }
 
 bool QHiRedis::connectServer(
@@ -63,11 +64,11 @@ bool QHiRedis::ping() const {
 	else {
 		state = false;
 	}
-
+	freeReplyObject(reply);
 	return state;
 }
 
-bool QHiRedis::del(const QVariant& key) {
+bool QHiRedis::del(const QVariant& key) const {
 	bool state = true;
 	QString command = "DEL " + key.toString();
 
@@ -84,11 +85,11 @@ bool QHiRedis::del(const QVariant& key) {
 	else {
 		state = false;
 	}
-
+	freeReplyObject(reply);
 	return state;
 }
 
-bool QHiRedis::exists(const QVariant& key) {
+bool QHiRedis::exists(const QVariant& key) const {
 	bool state = true;
 	QString command = "EXISTS " + key.toString();
 
@@ -105,7 +106,7 @@ bool QHiRedis::exists(const QVariant& key) {
 	else {
 		state = false;
 	}
-
+	freeReplyObject(reply);
 	return state;
 }
 
@@ -125,7 +126,7 @@ bool QHiRedis::setString(const QVariant& key, const QVariant& value) const {
 	else {
 		state = false;
 	}
-
+	freeReplyObject(reply);
 	return state;
 }
 
@@ -145,7 +146,7 @@ bool QHiRedis::setnxString(const QVariant& key, const QVariant& value) const {
 	else {
 		state = false;
 	}
-
+	freeReplyObject(reply);
 	return state;
 }
 
@@ -170,7 +171,7 @@ bool QHiRedis::mSetString(const QVariantMap& map) const {
 	else {
 		state = false;
 	}
-
+	freeReplyObject(reply);
 	return state;
 }
 
@@ -197,7 +198,7 @@ bool QHiRedis::mSetnxString(const QVariantMap& map) const {
 	else {
 		state = false;
 	}
-
+	freeReplyObject(reply);
 	return state;
 }
 
@@ -212,7 +213,7 @@ QVariant QHiRedis::getString(const QVariant& key) const {
 			value = QString(reply->str);
 		}
 	}
-
+	freeReplyObject(reply);
 	return value;
 }
 
@@ -234,7 +235,7 @@ bool QHiRedis::incrString(const QVariant& key, qint64* const value) const {
 	else {
 		state = false;
 	}
-
+	freeReplyObject(reply);
 	return state;
 }
 
@@ -256,7 +257,7 @@ bool QHiRedis::decrString(const QVariant& key, qint64* const value) const {
 	else {
 		state = false;
 	}
-
+	freeReplyObject(reply);
 	return state;
 }
 
@@ -278,7 +279,7 @@ bool QHiRedis::setHash(const QVariant& key, const QVariantHash& value) const {
 	else {
 		state = false;
 	}
-
+	freeReplyObject(reply);
 	return state;
 }
 
@@ -313,6 +314,6 @@ QVariantHash QHiRedis::getHash(const QVariant& key) const {
 			}
 		}
 	}
-
+	freeReplyObject(reply);
 	return valueHash;
 }

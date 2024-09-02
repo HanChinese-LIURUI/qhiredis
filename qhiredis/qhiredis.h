@@ -44,12 +44,12 @@ public:
 	//! @brief 删除指定的key
 	//! @param key 
 	//! @return 成功:true(不存在这个数据也会返回true)
-	bool del(const QVariant& key);
+	bool del(const QVariant& key) const;
 
 	//! @brief 检查给定key是否存在
 	//! @param key 
 	//! @return 存在:true
-	bool exists(const QVariant& key);
+	bool exists(const QVariant& key) const;
 
 	//! @brief 设置一个key-value对，key如果存在，则更新value。
 	//! @param key 
