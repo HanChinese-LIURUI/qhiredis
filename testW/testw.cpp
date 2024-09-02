@@ -1,4 +1,5 @@
-﻿#include "testw.h"
+﻿#include "btcpserver.h"
+#include "testw.h"
 #include <QDebug>
 #include <QElapsedTimer>
 #include <QFile>
@@ -10,13 +11,29 @@ TestW::TestW(QWidget* parent)
 	, ui(new Ui::TestWClass()) {
 	ui->setupUi(this);
 
-	QHiRedis redis;
-	QString error;
-	bool state = redis.connectServer(&error);
+	//QHiRedis redis;
+	//QString error;
+	//bool state = redis.connectServer(&error);
 	//QVariant s = redis.getHashField(1200, "HTTP://S.JNC.CN/NA/pKF6JoLqhyU7TYfbB5a");
 	//QVariantHash h = redis.getHashAll(1200);
-	getHashfield();
-	hashInsert();
+	//getHashfield();
+	//hashInsert();
+
+
+	BTcpServer* bTcpServer = new BTcpServer();
+	bTcpServer->listen(QHostAddress::Any, 8080);
+
+	connect(bTcpServer, &QTcpServer::newConnection, this, [=] (){
+		//如果有新的连接就取出
+		while (bTcpServer->hasPendingConnections()) {
+
+			BTcpSocket* socket = qobject_cast<BTcpSocket*>(bTcpServer->nextPendingConnection());
+
+			connect(socket, &BTcpSocket::readyData, [=](QByteArray line) {
+				qDebug() << QString(line);
+				});
+		}
+		});
 
 }
 
@@ -64,8 +81,8 @@ void TestW::getHashfield() {
 			QThread::msleep(100);
 			timer.start();
 			QVariant s = redis.getHashField(1200, "HTTP://S.JNC.CN/NA/pKF6JoLqhyU7TYfbB5a");
-			if(timer.elapsed() > 3)
-				qInfo() << u8"查询数据" << timer.elapsed() << state << s ;
+			if (timer.elapsed() > 3)
+				qInfo() << u8"查询数据" << timer.elapsed() << state << s;
 		}
 		}
 	);
