@@ -33,17 +33,15 @@ bool QHiRedis::connectServer(
 		}
 	}
 	//验证密码
-	if (state && !useName.isEmpty() && !passWord.isEmpty()) {
-		redisReply* reply = (redisReply*)redisCommand(
-			redis,
-			QString("AUTH %1").arg(useName).toStdString().c_str(),
-			passWord.toStdString().c_str());
+	if (state && !passWord.isEmpty()) {
+		QString command = "AUTH " + passWord;
+		redisReply* reply = (redisReply*)redisCommand(redis, command.toUtf8());
 
-		if (reply->type == REDIS_REPLY_ERROR) {
-			state = false;
-		}
-		else {
-			*error = "Authentication failure";
+		if (reply) {
+			if (QString(reply->str) != "OK") {
+				state = false;
+				*error = "Authentication failure";
+			}
 		}
 		freeReplyObject(reply);
 	}
@@ -360,7 +358,7 @@ QVariantHash QHiRedis::getHashAll(const QVariant& key) const {
 			size_t size = reply->elements;
 			QString key, value;
 			for (size_t i = 0; i < size; i++) {
-				
+
 				redisReply* tReply = reply->element[i];
 
 				if (tReply) {

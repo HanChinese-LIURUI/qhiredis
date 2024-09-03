@@ -13,15 +13,15 @@ TestW::TestW(QWidget* parent)
 	, ui(new Ui::TestWClass()) {
 	ui->setupUi(this);
 
-	//QHiRedis redis;
-	//QString error;
-	//bool state = redis.connectServer(&error);
-	//QVariant s = redis.getHashField(1200, "HTTP://S.JNC.CN/NA/pKF6JoLqhyU7TYfbB5a");
-	//QVariantHash h = redis.getHashAll(1200);
-	//getHashfield();
-	//hashInsert();
+	QHiRedis redis;
+	QString error;
+	bool state = redis.connectServer(&error,"","blsm02386886360+");
+	QVariant s = redis.getHashField(1200, "HTTP://S.JNC.CN/NA/pKF6JoLqhyU7TYfbB5a");
+	QVariantHash h = redis.getHashAll(1200);
+	getHashfield();
+	hashInsert();
 
-
+/*
 	BTcpServer* bTcpServer = new BTcpServer();
 	bTcpServer->listen(QHostAddress::Any, 8080);
 
@@ -44,8 +44,7 @@ TestW::TestW(QWidget* parent)
 				});
 		}
 		});
-
-
+*/
 
 }
 
