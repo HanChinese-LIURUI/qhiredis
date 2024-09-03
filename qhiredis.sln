@@ -10,8 +10,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testW", "testW\testW.vcxpro
 		{9CFEC58B-FF1D-4558-A0C1-48E070D995F4} = {9CFEC58B-FF1D-4558-A0C1-48E070D995F4}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tcpClient", "tcpClient\tcpClient.vcxproj", "{FD9EE413-94D8-4897-BFF6-2C325FB5F05F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -26,10 +24,6 @@ Global
 		{48E2D6AB-7D6E-48F1-B088-5310CE0D43BA}.Debug|x64.Build.0 = Debug|x64
 		{48E2D6AB-7D6E-48F1-B088-5310CE0D43BA}.Release|x64.ActiveCfg = Release|x64
 		{48E2D6AB-7D6E-48F1-B088-5310CE0D43BA}.Release|x64.Build.0 = Release|x64
-		{FD9EE413-94D8-4897-BFF6-2C325FB5F05F}.Debug|x64.ActiveCfg = Debug|x64
-		{FD9EE413-94D8-4897-BFF6-2C325FB5F05F}.Debug|x64.Build.0 = Debug|x64
-		{FD9EE413-94D8-4897-BFF6-2C325FB5F05F}.Release|x64.ActiveCfg = Release|x64
-		{FD9EE413-94D8-4897-BFF6-2C325FB5F05F}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

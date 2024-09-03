@@ -21,31 +21,6 @@ TestW::TestW(QWidget* parent)
 	getHashfield();
 	hashInsert();
 
-/*
-	BTcpServer* bTcpServer = new BTcpServer();
-	bTcpServer->listen(QHostAddress::Any, 8080);
-
-	connect(bTcpServer, &QTcpServer::newConnection, this, [=] (){
-		//如果有新的连接就取出
-		while (bTcpServer->hasPendingConnections()) {
-
-			BTcpSocket* socket = qobject_cast<BTcpSocket*>(bTcpServer->nextPendingConnection());
-			
-			connect(socket, &BTcpSocket::readyData, [=](QByteArray line) {
-				socket->write("OK" + QDateTime::currentDateTime().toString().toUtf8());
-				socket->flush();
-				});
-
-			connect(socket, &BTcpSocket::stateChanged, [=](QAbstractSocket::SocketState state) {
-				QTimer::singleShot(100, this, [=]() {
-					qDebug() << "当前连接：" << socket->peerAddress() << socket->peerPort() << state;
-					});
-				
-				});
-		}
-		});
-*/
-
 }
 
 TestW::~TestW() {
