@@ -63,7 +63,7 @@ void BTcpSocket::dataProcessing() {
 			return;
 		}
 		if (index < 0) {
-			continue;
+			break;
 		}
 
 		if (index % 2 == 0) {

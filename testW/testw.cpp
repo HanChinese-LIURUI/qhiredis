@@ -5,6 +5,8 @@
 #include <QFile>
 #include <QtConcurrent>
 #include <QThread>
+#include <QDateTime>
+
 
 TestW::TestW(QWidget* parent)
 	: QMainWindow(parent)
@@ -28,12 +30,22 @@ TestW::TestW(QWidget* parent)
 		while (bTcpServer->hasPendingConnections()) {
 
 			BTcpSocket* socket = qobject_cast<BTcpSocket*>(bTcpServer->nextPendingConnection());
-
+			
 			connect(socket, &BTcpSocket::readyData, [=](QByteArray line) {
-				qDebug() << QString(line);
+				socket->write("OK" + QDateTime::currentDateTime().toString().toUtf8());
+				socket->flush();
+				});
+
+			connect(socket, &BTcpSocket::stateChanged, [=](QAbstractSocket::SocketState state) {
+				QTimer::singleShot(100, this, [=]() {
+					qDebug() << "当前连接：" << socket->peerAddress() << socket->peerPort() << state;
+					});
+				
 				});
 		}
 		});
+
+
 
 }
 
